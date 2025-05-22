@@ -14,8 +14,8 @@ const getTile = (x, y) => {
   return game.getTileState(x, y)
 }
 
-const getRemainingMines = () => {
-  return game.getRemainingMines()
+const remainingMines = () => {
+  return game.remainingMines
 }
 
 const tryOpenTile = (x, y) => {

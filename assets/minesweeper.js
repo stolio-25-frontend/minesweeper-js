@@ -41,7 +41,8 @@
  *  따라서 지금 미리 찾아보기보다, 해당 코드에 첨부한 설명과 링크를 참고하시기 바랍니다.
  */
 
-
+// 이건 오타거나 마저 지워지지 않은 코드가 아닙니다.
+// https://ko.javascript.info/strict-mode
 'use strict'
 
 /**
@@ -53,6 +54,12 @@ const DEFAULT_MINE_COUNT = 5
 
 /**
  * 각 타일의 조사 상태를 나타내는데 사용되는 플래그 열거형 선언
+ * 
+ * 열거형은 하나의 그룹으로 묶을 수 있는 상수들을 정의하는데 사용됩니다.
+ * 열거형을 사용하면 코드의 가독성을 높이고, 상수값을 관리하기 쉽게 만들어줍니다.
+ * 
+ * 예를 들어, 게임 속에 선택지가 세 개 존재하고 그 외의 선택지는 존재하지 않는다면,
+ * 그 세 개의 선택지를 열거형으로 정의하여 사용하여 코드의 가독성을 높이고 발생할 수 있는 오류를 방지할 수 있습니다.
  */
 const TileFlags = {
   DEFAULT: "default",
@@ -63,7 +70,7 @@ const TileFlags = {
 
 /**
  * 각 타일 상태 표현에 사용되는 클래스
- * 이후 게임 클래스가 2차원 MinesweeperTile 배열, (=Array<Array<MinesweeperTile>>) 형태로 사용함
+ * 이후 게임 클래스가 2차원 MinesweeperTile 배열 (=Array<Array<MinesweeperTile>>) 형태로 사용함
  */
 class MinesweeperTile {
   tileState = TileFlags.DEFAULT
@@ -156,7 +163,9 @@ class Minesweeper {
     this._cacheNearMineCount()
   }
 
-  getRemainingMines = () => this.totalMines - this.findMines
+  // 아래와 같이 get 으로 시작하는 메서드는 getter로 사용됩니다.
+  // https://ko.javascript.info/property-accessors
+  get remainingMines() { return this.totalMines - this.findMines }
 
   onTryFlagTile = (y, x) => {
     /**

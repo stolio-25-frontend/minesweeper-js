@@ -253,24 +253,29 @@ class Minesweeper {
     /**
      * 이 메서드는 매개변수로 주어지는 y, x 좌표가 유효함을 가정하고 동작합니다.
      * 따라서 이 메서드를 호출하기 전 반드시 매개변수로 전달하는 좌표값에 대해 유효성 검사를 실시하여야 합니다.
-     */
-
-    /**
-     * 이 메서드는 매개변수로 주어지는 y, x 좌표가 유효함을 가정하고 동작합니다.
-     * 따라서 이 메서드를 호출하기 전 반드시 매개변수로 전달하는 좌표값에 대해 유효성 검사를 실시하여야 합니다.
      * 
      * 이 메서드는 매개변수로 주어지는 좌표를 기준으로 인접한 빈 타일을 모두 개방합니다.
-     * 개방하는데 너비 우선 탐색(BFS) 알고리즘을 사용합니다.
+     * 이 과정에서 개방된 타일의 좌표들을 셋으로 반환합니다. 즉, 반환값은 이 메서드의 실행으로 발생한
+     * 변경 사항의 영향을 받는 좌표들입니다.
      * 
-     * 자세히 알아보기:
+     * 이 메서드는 개방하는데 너비 우선 탐색(BFS) 알고리즘을 사용합니다. 자세히 알아보기:
      * https://blog.encrypted.gg/941
      *
      * 백준 온라인 저지 관련 문제
      * 2178번: 미로 탐색 - https://www.acmicpc.net/problem/2178
      */
     
+    // const queue: Array<Array<number>>
     const queue = []
     queue.push([y, x])
+
+    /**
+     * 개방하는 타일의 좌표를 셋으로 반환하는 스펙은 최적화를 위해 추가된 것입니다:
+     * 이 메서드가 종료된 이후에 메서드의 실행으로 발생한 변경 사항을 추적하는 것은 컴퓨팅 비용이 많이 소모됩니다.
+     * 하지만 처리 과정 중 변경 사항을 기록하는 것은 컴퓨팅 비용을 크게 소모하지 않습니다.
+     * 따라서 로직 전반에 걸쳐 성능 요구사항을 낮추기 위해 이 로직이 포함되었습니다.
+     */
+    // const UpdatedTiles: Set<Array<number>>
     const updatedTiles = new Set()
 
     while (queue.length > 0) {
@@ -282,16 +287,23 @@ class Minesweeper {
 
       let tileState = this.map[i][j].tileState
 
-      // 큐의 다음 값을 가져오기:
-      if (tileState !== TileFlags.DEFAULT) {
-        continue
-      }
+      /**
+       * 아래는 큐에 삽입해두고 다음 차례에 꺼내어 같은 처리를 반복할 좌표를 고르는 코드입니다.
+       * 큐에 삽입하지 않아야 할 좌표는 조건문을 통해 조기에 각 반복 순간을 탈출하여 (continue)
+       * 이후에 처리되지 않도록 합니다.
+       */
 
+      /**
+       * 현재 타일이 TileFlags.DEFAULT 상태가 아니라면,
+       * TileFlags.OPEN => 이미 개방되어있음
+       * TileFlags.FLAG => 플래그가 설정되어있으므로 개방하지 않음
+       * TileFlags.QUESTION => ?가 설정되어있으므로 개방하지 않음
+       */
+      if (tileState !== TileFlags.DEFAULT) { continue }
       this.map[i][j].tileState = TileFlags.OPEN
+
       // 현재 타일의 인접 지뢰 개수가 0이 아니라면 더 이상 개방하지 않음
-      if (this._cachedNearMineCounts[i][j] !== 0) {
-        continue
-      }
+      if (this._cachedNearMineCounts[i][j] !== 0) { continue }
 
 
       // 현재 타일을 기준으로 인접한 타일 중 아직 개방되지 않은 타일을 모두 큐에 추가

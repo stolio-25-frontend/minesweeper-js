@@ -5,8 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Minesweeper Game</title>
   <link rel="stylesheet" href="./assets/style.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
+
+  <!--
+    구글 머티리얼 아이콘을 로드합니다.
+    구글 머티리얼 아리콘은 이 파일에서 직접 사용되지 않습니다. ./assets/minesweeper.render.js에서 타일을
+    생성하고 처리할 때, 아이콘을 표시할 필요가 있다면 로드한 머티리얼 아이콘을 표시합니다.
+    
+    minesweeper.render.js는 <span class="material-icons">priority_high</span> 와 같은 HTML 문자열을
+    이 문서에 삽입합니다.
+    https://fonts.google.com/icons?selected=Material+Icons:priority_high:&icon.query=priority&icon.set=Material+Icons&icon.style=Filled
+    에서 사용법을 확인하세요.
+  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
   <div id="app-root">
@@ -37,5 +47,16 @@
     <div id="game-body" class="game-body"></div>
   </div>
 </body>
+
+<!--
+  minesweeper.js는 이 파일에서 직접 사용되지 않습니다. 게임 진행상황의 제어와 사용자와의 상호작용 처리는
+  HTML 바인딩 코드인 ./assets/minesweeper.render.js에서 처리합니다. minesweeper.js는 minesweeper.render.js에서
+  import하여 사용합니다.
+
+  주의: import 구문은 ES6 모듈에서만 사용할 수 있습니다. 따라서 이 파일은 아래와 같이 type="module" 속성을 사용하여
+  ES6 모듈로 로드해야 합니다. 이 속성이 없으면 import 구문이 작동하지 않고, 오류가 발생합니다.
+
+  ES6에 대해 더 읽어보기: https://mygumi.tistory.com/235
+-->
 <script type="module" src="./assets/minesweeper.render.js"></script>
 </html>

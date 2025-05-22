@@ -1,4 +1,8 @@
 * {
+  /*
+   * 변수 선언
+   * 실제로는 var(--tile-width)와 var(--tile-height)로 사용할 수 있습니다.
+   */
   --tile-width: 40px;
   --tile-height: 40px;
 }
